@@ -6,9 +6,14 @@ declare module 'styled-components' {
     
     colors: {
       background: string;
+      contrast: string;
 
       text: {
         regular: string;
+
+        bold: string;
+        medium: string;
+        thin: string;
       }
     }
   }
