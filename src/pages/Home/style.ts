@@ -109,6 +109,17 @@ export const Section = styled.section`
       padding: 24px;
     }
   }
+
+  .pokemon {
+    margin: 24px;
+
+    img {
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-crisp-edges;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+  }
 `;
 
 export const Footer = styled.footer`
