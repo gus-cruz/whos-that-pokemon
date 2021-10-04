@@ -66,6 +66,30 @@ export const Section = styled.section`
     cursor: default;
   }
 
+  .error {
+    transition: all 0.5s;
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+
+  }
+
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
+
   .input {
     background: ${props => props.theme.colors.contrast};
     border-radius: 10px;
@@ -119,6 +143,15 @@ export const Section = styled.section`
       image-rendering: pixelated;
       image-rendering: crisp-edges;
     }
+  }
+
+  .next-in {
+    color: ${props => props.theme.colors.text.regular};
+    font-size: 10px;
+    margin: 4px 0;
+    text-align: right;
+    cursor: progress;
+    height: 16px;
   }
 `;
 
