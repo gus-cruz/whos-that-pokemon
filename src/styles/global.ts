@@ -12,6 +12,10 @@ export default createGlobalStyle`
     text-decoration: none;
   }
 
+  body {
+    background: ${props => props.theme.colors.background};
+  }
+
   button {
     cursor: pointer;
   }

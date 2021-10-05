@@ -24,7 +24,7 @@ const Home: React.FC = () => {
   const [ waiting, setWaiting ] = useState(false);
   const [ inputValue, setInputValue ] = useState('');
 
- 
+  const [ config, setConfig ] = useState({ dificulty: 'normal' })
 
   //spawn a new random pokemon
   async function spawnPokemon(isInsta = true) {
@@ -33,7 +33,8 @@ const Home: React.FC = () => {
       let newPokemon = {
         name: response.data.forms[0].name,
         sprite: response.data.sprites.front_default,
-        shiny_sprite: response.data.sprites.front_shiny
+        shiny_sprite: response.data.sprites.front_shiny,
+        isHide: true
       }
       
       if(isInsta){
@@ -53,22 +54,26 @@ const Home: React.FC = () => {
     } else {
       setScore(0);
       setError(true);
-
-      setInterval(() => {
-        setError(false);
-      }, 2000)
     }
+
+    let oldPokemon = pokemon;
+    oldPokemon.isHide = false;
+    setPokemon(oldPokemon);
+    setWaiting(true);
 
     let newPokemon = await spawnPokemon(false);
     let currentTime = 3;
-
-    setWaiting(true);
+    
     setTime(currentTime);
+    setInputValue('');
+    
     const countDown = setInterval(function(){
       if(currentTime <= 0){
+        setPokemon(null);
         setPokemon(newPokemon);
-        setInputValue('');
+
         setWaiting(false);
+        setError(false);
         clearInterval(countDown);
       } else {
         currentTime--;
@@ -93,10 +98,20 @@ const Home: React.FC = () => {
           </div>
           <p className="switch-dificulty" role='button'>switch to easy mode</p>
         </Header>
-        <Section>
-          <h1>who's that pokemon?</h1>
+        <Section isHide={pokemon ? pokemon.isHide : false}>
+          <div className="text">
+            {waiting ?
+              <h1>{pokemon ? 
+                  <><small>it's</small><br/> {pokemon.name}</>
+                : 
+                  "who's that pokemon?"}
+              </h1>
+            :
+              <h1>who's that pokemon?</h1>
+            }
+          </div>
           <div className="pokemon">
-            <img src={pokemon ? pokemon.sprite : ''} alt={pokemon ? pokemon.name : ''} width={240}/>
+            <img src={pokemon ? pokemon.sprite : ''} alt={pokemon ? pokemon.name : ''} width={240} className={pokemon ? (pokemon.isHide ? 'hide' : '') : ''}/>
           </div>
           <Form onSubmit={handleSubmit}>
 
@@ -114,7 +129,7 @@ const Home: React.FC = () => {
         </Section>
         <Footer>
           <a rel="noreferrer" href="https://www.linkedin.com/in/gus-cruz/" target="_blank">contact</a>
-          <a rel="noreferrer" href="https://github.com/gus-cruz" target="_blank">about</a>
+          <a rel="noreferrer" href="https://github.com/gus-cruz/whos-that-pokemon" target="_blank">about</a>
         </Footer>
       </Container>
     </>

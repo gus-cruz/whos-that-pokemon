@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface SectionProps {
+  isHide: boolean;
+}
+
 export const Container = styled.div`
   background: ${props => props.theme.colors.background};
 
@@ -50,13 +54,24 @@ export const Header = styled.header`
   }
 `;
 
-export const Section = styled.section`
+export const Section = styled.section<SectionProps>`
   display: flex;
   flex: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 24px;
+
+  small {
+    color: ${props => props.theme.colors.text.bold}
+  }
+
+  .text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 72px;
+  }
 
   h1 {
     text-align: center;
@@ -135,13 +150,22 @@ export const Section = styled.section`
   }
 
   .pokemon {
-    margin: 24px;
+    margin: 24px 0 16px;
+    height: 248px;
 
     img {
       image-rendering: -moz-crisp-edges;
       image-rendering: -webkit-crisp-edges;
       image-rendering: pixelated;
       image-rendering: crisp-edges;
+      transition: ${props => props.isHide ? '' : '0.5s'};
+
+      user-drag: none;
+      -webkit-user-drag: none;
+      user-select: none;
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
     }
   }
 
@@ -152,6 +176,10 @@ export const Section = styled.section`
     text-align: right;
     cursor: progress;
     height: 16px;
+  }
+
+  .hide {
+    filter: brightness(0);
   }
 `;
 
