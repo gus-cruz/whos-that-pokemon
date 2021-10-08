@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import {shade} from 'polished';
+
 interface SectionProps {
   isHide: boolean;
 }
@@ -105,14 +107,47 @@ export const Section = styled.section<SectionProps>`
     }
   }
 
+  .choices {
+    max-width: 480px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+     
+    @media (max-width: 880px) {
+      grid-template-columns: repeat(1, 1fr);
+    }  
+  
+    .input {
+      padding: 16px;
+      transition: 0.1s;
+      color: ${props => props.theme.colors.text.regular};
+      height: 56px;
+
+      &:hover {
+        transform: scale(0.98);
+        cursor: pointer;
+        background: ${props => shade(0.08, props.theme.colors.contrast)};
+      }
+    }
+  }
+
+  form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 480px;
+    width: 100%;
+  }
+
   .input {
     background: ${props => props.theme.colors.contrast};
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    max-width: 480px;
     width: 100%;
 
     input {
@@ -176,6 +211,7 @@ export const Section = styled.section<SectionProps>`
     text-align: right;
     cursor: progress;
     height: 16px;
+    align-self: flex-end;
   }
 
   .hide {
