@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/whos-that-pokemon/static/js/main.388b282c.chunk.js",
-    "main.js.map": "/whos-that-pokemon/static/js/main.388b282c.chunk.js.map",
+    "main.js": "/whos-that-pokemon/static/js/main.2661bd44.chunk.js",
+    "main.js.map": "/whos-that-pokemon/static/js/main.2661bd44.chunk.js.map",
     "runtime-main.js": "/whos-that-pokemon/static/js/runtime-main.c52f45db.js",
     "runtime-main.js.map": "/whos-that-pokemon/static/js/runtime-main.c52f45db.js.map",
     "static/js/2.36ce1a31.chunk.js": "/whos-that-pokemon/static/js/2.36ce1a31.chunk.js",
@@ -14,6 +14,6 @@
   "entrypoints": [
     "static/js/runtime-main.c52f45db.js",
     "static/js/2.36ce1a31.chunk.js",
-    "static/js/main.388b282c.chunk.js"
+    "static/js/main.2661bd44.chunk.js"
   ]
 }
