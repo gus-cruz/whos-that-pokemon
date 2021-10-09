@@ -26,13 +26,13 @@ const Home: React.FC = () => {
 
   const [ config, setConfig ] = useState({ dificulty: 'normal' });
 
-  const [choices, setChoices] = useState([]);
+  const [choices, setChoices] = useState([] as any);
 
   //spawn a new random pokemon
   async function spawnPokemon(isInsta = true) {
     try {
-      let response = await api.get(`/pokemon/${Math.floor(Math.random() * 150) + 1}`); 
-      // let response = await api.get(`/pokemon/${Math.floor(Math.random() * 898) + 1}`); 
+      // let response = await api.get(`/pokemon/${Math.floor(Math.random() * 150) + 1}`); 
+      let response = await api.get(`/pokemon/${Math.floor(Math.random() * 898) + 1}`); 
       let newPokemon = {
         name: response.data.forms[0].name,
         sprite: response.data.sprites.front_default,
@@ -64,19 +64,22 @@ const Home: React.FC = () => {
     let oldPokemon = pokemon;
     oldPokemon.isHide = false;
     setPokemon(oldPokemon);
-    setWaiting(true);
+    
     
     let newPokemon = await spawnPokemon(false);
+    let newChoices = await generateChoices(newPokemon);
+
     let currentTime = 3;
-    
     setTime(currentTime);
+    setWaiting(true);
+
     setInputValue('');
     
     const countDown = setInterval(function(){
       if(currentTime <= 0){
         setPokemon(null);
         setPokemon(newPokemon);
-        generateChoices(newPokemon);
+        setChoices(newChoices);
 
         setWaiting(false);
         setError(false);
@@ -92,12 +95,12 @@ const Home: React.FC = () => {
     spawnPokemon();
   }, []);
 
-  async function generateChoices(newPokemon: any){
+  async function generateChoices(newPokemon: any): Promise<any>{
     if(config.dificulty === "easy"){
       let newChoices = [];
       for(let i = 0; i < 3; i++){
-        let response = await api.get(`/pokemon/${Math.floor(Math.random() * 150) + 1}`); 
-        // let response = await api.get(`/pokemon/${Math.floor(Math.random() * 898) + 1}`); 
+        // let response = await api.get(`/pokemon/${Math.floor(Math.random() * 150) + 1}`); 
+        let response = await api.get(`/pokemon/${Math.floor(Math.random() * 898) + 1}`); 
         newChoices.push(response.data.forms[0].name);
       }
       
@@ -110,7 +113,9 @@ const Home: React.FC = () => {
         newChoices[3] = newPokemon.name;
       }
 
-      setChoices(newChoices as any);
+      return newChoices;
+    } else {
+      return ['', '', '', '']
     }
   }
 
@@ -122,7 +127,8 @@ const Home: React.FC = () => {
     setConfig({...newConfig});
     setScore(0);
     setPokemon(newPokemon)
-    generateChoices(newPokemon);
+    let newChoices = await generateChoices(newPokemon);
+    setChoices(newChoices);
   }
 
   return (
@@ -157,6 +163,8 @@ const Home: React.FC = () => {
           <p className="next-in">
             {waiting ? `next in... ${time}` : ''}
           </p>
+          <div className={`progress-bar ${waiting ? 'loading' : ''}`}>
+          </div>
           {
             config.dificulty === "normal" ?
               <div className={`input ${error ? 'error' : ''}`}>

@@ -207,11 +207,34 @@ export const Section = styled.section<SectionProps>`
   .next-in {
     color: ${props => props.theme.colors.text.regular};
     font-size: 10px;
-    margin: 4px 0;
+    margin: 4px 0 2px;
     text-align: right;
     cursor: progress;
     height: 16px;
     align-self: flex-end;
+  }
+
+  .progress-bar {
+    height: 4px;
+    margin: 0 2px 4px;
+    align-self: flex-start;
+   
+  }
+
+  .loading {
+    background: ${props => props.theme.colors.text.bold};
+    border-radius: 10px;
+    animation: loading 4.2s cubic-bezier(.36,.07,.19,.97) both;
+  }
+
+  @keyframes loading {
+    0% {
+      width: 0;
+    }
+
+    100% {
+      width: 100%;
+    }
   }
 
   .hide {
@@ -226,7 +249,7 @@ export const Footer = styled.footer`
 
   a {
     font-size: 12px;
-    color: ${props => props.theme.colors.text.regular};
+    color: ${props => props.theme.colors.text.bold};
     transition: color 0.2s ease-in;
     margin: 16px;
 
