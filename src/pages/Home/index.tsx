@@ -32,7 +32,7 @@ const Home: React.FC = () => {
   async function spawnPokemon(isInsta = true) {
     try {
       // let response = await api.get(`/pokemon/${Math.floor(Math.random() * 150) + 1}`); 
-      let response = await api.get(`/pokemon/${Math.floor(Math.random() * 898) + 1}`); 
+      let response = await api.get(`/pokemon/${Math.floor(Math.random() * 150) + 1}`); 
       let newPokemon = {
         name: response.data.forms[0].name,
         sprite: response.data.sprites.front_default,
@@ -52,43 +52,44 @@ const Home: React.FC = () => {
 
   //handle the user form submit
   async function handleSubmit(choice = ''){
-    let awnser = choice ? choice : inputValue;
+    if(pokemon.isHide){
+      let oldPokemon = pokemon;
+      oldPokemon.isHide = false;
+      setPokemon(oldPokemon);
 
-    if (pokemon.name.toLowerCase() === awnser.toLocaleLowerCase()) {
-      setScore(score + 1);
-    } else {
-      setScore(0);
-      setError(true);
-    }
+      let awnser = choice && typeof choice !== 'object'? choice : inputValue;
 
-    let oldPokemon = pokemon;
-    oldPokemon.isHide = false;
-    setPokemon(oldPokemon);
-    
-    
-    let newPokemon = await spawnPokemon(false);
-    let newChoices = await generateChoices(newPokemon);
-
-    let currentTime = 3;
-    setTime(currentTime);
-    setWaiting(true);
-
-    setInputValue('');
-    
-    const countDown = setInterval(function(){
-      if(currentTime <= 0){
-        setPokemon(null);
-        setPokemon(newPokemon);
-        setChoices(newChoices);
-
-        setWaiting(false);
-        setError(false);
-        clearInterval(countDown);
+      if (pokemon.name.toLowerCase() === awnser.toLocaleLowerCase()) {
+        setScore(score + 1);
       } else {
-        currentTime--;
-        setTime(currentTime);
+        setScore(0);
+        setError(true);
       }
-    }, 1000);
+      
+      let newPokemon = await spawnPokemon(false);
+      let newChoices = await generateChoices(newPokemon);
+  
+      let currentTime = 3;
+      setTime(currentTime);
+      setWaiting(true);
+  
+      setInputValue('');
+      
+      const countDown = setInterval(function(){
+        if(currentTime <= 0){
+          setPokemon(null);
+          setPokemon(newPokemon);
+          setChoices(newChoices);
+  
+          setWaiting(false);
+          setError(false);
+          clearInterval(countDown);
+        } else {
+          currentTime--;
+          setTime(currentTime);
+        }
+      }, 1000);
+    }
   };
 
   useEffect(() => {
@@ -100,7 +101,7 @@ const Home: React.FC = () => {
       let newChoices = [];
       for(let i = 0; i < 3; i++){
         // let response = await api.get(`/pokemon/${Math.floor(Math.random() * 150) + 1}`); 
-        let response = await api.get(`/pokemon/${Math.floor(Math.random() * 898) + 1}`); 
+        let response = await api.get(`/pokemon/${Math.floor(Math.random() * 150) + 1}`); 
         newChoices.push(response.data.forms[0].name);
       }
       
@@ -136,6 +137,8 @@ const Home: React.FC = () => {
       <meta name="theme-color" content={theme.colors.contrast} />
 
       <Container>
+        <div className={`progress-bar ${waiting ? 'loading' : ''}`} >
+          </div>
         <Header>
           <div>
             <img src={Pokeball} alt="score"/>
@@ -145,8 +148,8 @@ const Home: React.FC = () => {
         </Header>
         <Section isHide={pokemon ? pokemon.isHide : false}>
           <div className="text">
-            {waiting ?
-              <h1>{pokemon ? 
+            {pokemon ?
+              <h1>{!pokemon.isHide ? 
                   <><small>it's</small><br/> {pokemon.name}</>
                 : 
                   "who's that pokemon?"}
@@ -156,15 +159,13 @@ const Home: React.FC = () => {
             }
           </div>
           <div className="pokemon">
-            <img src={pokemon ? pokemon.sprite : ''} alt={pokemon ? pokemon.name : ''} width={240} className={pokemon ? (pokemon.isHide ? 'hide' : '') : ''}/>
+            <img src={pokemon ? pokemon.sprite : ''} alt={pokemon ? pokemon.name : ''} width={240} className={pokemon?.isHide ? 'hide' : (!error ? 'bounce' : '')}/>
           </div>
           <Form onSubmit={handleSubmit}>
 
           <p className="next-in">
             {waiting ? `next in... ${time}` : ''}
           </p>
-          <div className={`progress-bar ${waiting ? 'loading' : ''}`}>
-          </div>
           {
             config.dificulty === "normal" ?
               <div className={`input ${error ? 'error' : ''}`}>
@@ -175,16 +176,16 @@ const Home: React.FC = () => {
               </div>
             :
               <div className="choices"> 
-                <div className={`input ${error && inputValue === choices[0] ? 'error' : ''}`} onClick={() => {handleSubmit(choices[0])}}>
+                <div className={`input ${!pokemon?.isHide && pokemon?.name !== choices[0] ? 'wrong-choice' : ''}`} onClick={() => {handleSubmit(choices[0])}}>
                   <p>{choices[0] ? choices[0]  : ''}</p>
                 </div>
-                <div className={`input ${error && inputValue === choices[1] ? 'error' : ''}`} onClick={() => {handleSubmit(choices[1])}}>
+                <div className={`input ${!pokemon?.isHide && pokemon?.name !== choices[1] ? 'wrong-choice' : ''}`} onClick={() => {handleSubmit(choices[1])}}>
                   <p>{choices[1] ? choices[1]  : ''}</p>
                 </div>
-                <div className={`input ${error && inputValue === choices[2] ? 'error' : ''}`} onClick={() => {handleSubmit(choices[2])}}>
+                <div className={`input ${!pokemon?.isHide && pokemon?.name !== choices[2] ? 'wrong-choice' : ''}`} onClick={() => {handleSubmit(choices[2])}}>
                   <p>{choices[2] ? choices[2]  : ''}</p>
                 </div>
-                <div className={`input ${error && inputValue === choices[3] ? 'error' : ''}`} onClick={() => {handleSubmit(choices[3])}}>
+                <div className={`input ${!pokemon?.isHide && pokemon?.name !== choices[3] ? 'wrong-choice' : ''}`} onClick={() => {handleSubmit(choices[3])}}>
                   <p>{choices[3] ? choices[3]  : ''}</p>
                 </div>
               </div>

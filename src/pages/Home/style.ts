@@ -13,12 +13,33 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  .progress-bar {
+    height: 4px;
+    align-self: flex-start;
+   
+  }
+
+  .loading {
+    background: ${props => props.theme.colors.text.bold};
+    border-radius: 10px;
+    animation: loading 4.2s cubic-bezier(.36,.07,.19,.97) both;
+  }
+
+  @keyframes loading {
+    0% {
+      width: 0;
+    }
+
+    100% {
+      width: 100%;
+    }
+  }
 `;
 
 export const Header = styled.header`
   display: flex;
   justify-content: space-between;
-  padding: 16px;
+  padding: 12px 16px 16px 16px;
 
   div {
     display: flex;
@@ -202,6 +223,16 @@ export const Section = styled.section<SectionProps>`
       -webkit-user-select: none;
       -ms-user-select: none;
     }
+
+    .bounce {
+      animation: bounce 1s ease forwards;
+    }
+    @keyframes bounce {
+      0%, 40%, 70%, 100% {transform: translateY(0);} 
+      30% {transform: translateY(-10px);} 
+      60% {transform: translateY(-7px);} 
+      80% {transform: translateY(-3px);} 
+    }
   }
 
   .next-in {
@@ -214,31 +245,13 @@ export const Section = styled.section<SectionProps>`
     align-self: flex-end;
   }
 
-  .progress-bar {
-    height: 4px;
-    margin: 0 2px 4px;
-    align-self: flex-start;
-   
-  }
-
-  .loading {
-    background: ${props => props.theme.colors.text.bold};
-    border-radius: 10px;
-    animation: loading 4.2s cubic-bezier(.36,.07,.19,.97) both;
-  }
-
-  @keyframes loading {
-    0% {
-      width: 0;
-    }
-
-    100% {
-      width: 100%;
-    }
-  }
-
   .hide {
     filter: brightness(0);
+  }
+
+  .wrong-choice {
+    transition: 0.2s;
+    opacity: 0.4;
   }
 `;
 
