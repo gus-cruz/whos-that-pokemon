@@ -141,7 +141,7 @@ const Home: React.FC = () => {
           </div>
         <Header>
           <div>
-            <img src={Pokeball} alt="score"/>
+            <img src={Pokeball} alt="score" className={!pokemon?.isHide && !error ? 'hithere' : ''}/>
             <p className="score">{score}</p>
           </div>
           <p className="switch-dificulty" role='button' onClick={() => changeDificulty()}>switch to {config.dificulty === "normal" ? "easy" : "normal"} mode</p>

@@ -41,6 +41,17 @@ export const Header = styled.header`
   justify-content: space-between;
   padding: 12px 16px 16px 16px;
 
+  .hithere {
+  animation: hithere 1s ease forwards;
+  }
+  @keyframes hithere {
+    30% { transform: scale(1.1); }
+    40%, 60% { transform: rotate(-10deg) scale(1.1); }
+    50% { transform: rotate(10deg) scale(1.1); }
+    70% { transform: rotate(0deg) scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
   div {
     display: flex;
     align-items: center;
